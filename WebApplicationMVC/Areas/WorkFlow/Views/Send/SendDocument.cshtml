@@ -1,0 +1,169 @@
+﻿@model DomainLayer.App_Model.DB_VM.VmDocSend
+@using GridMvc.Html
+@{
+    ViewBag.Title = "SendDocument";
+    Layout = "~/Areas/WorkFlow/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li> گردش اطلاعات </li>
+    <li class="active">‍ ارسال اسناد </li>
+</ol>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <i class="icon-calendar"></i>
+        <h3 class="panel-title BNazanin18">اطلاعات اسناد آماده ارسال</h3>
+    </div>
+    <div class="panel-body">
+
+        @foreach (var doc in Model.Documents)
+        {
+            <div class="list-group">
+                <a href="#" class="list-group-item ">
+                    <h4 class="list-group-item-heading"> شماره سند @doc.DocNo</h4>
+                    <p class="list-group-item-text">با موضوع  @doc.Subject  تولید شده در تاریخ @doc.RegisterDateSh</p>
+                </a>
+
+            </div>
+        }
+
+
+    </div>
+
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <i class="icon-calendar"></i>
+        <h3 class="panel-title BNazanin18">دریافت کنندگان اسناد</h3>
+    </div>
+    <div class="panel-body">
+
+        <div id="GridDraft" class="gridDiv">
+
+            @Html.Grid(Model.AvalableReceiver).Named("AvalableReceiver").Selectable(false).Columns(columns =>
+            {
+
+               columns.Add().Encoded(false).Sanitized(false).SetWidth(10)
+                       .RenderValueAs(o => Html.CheckBox("checked", false, new { @folId = o.ChartId, @PrsId = o.AppUserId}));
+               columns.Add(c => c.Employee.FullName).Titled("نام پرسنل");
+               columns.Add(c => c.Chart.Name).Titled("سمت");
+
+            }
+            ).WithPaging(10).Selectable(true)
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <i class="icon-calendar"></i>
+        <h3 class="panel-title BNazanin18">اطلاعات ارسال</h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-12">
+                    @Html.TextBoxFor(model => model.SendDescription, new {@placeholder = " توضیح ارسال ", @style = "width: 100%"})
+                    @Html.ValidationMessageFor(model => model.SendDescription)
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <div class="panel-footer">
+
+
+        <input type="button" id="btnSend" name="btnSend" class="btn btn-info" value="ارسال" />
+    </div>
+</div>
+
+
+
+@section scripts {
+
+
+    <script>
+
+
+        function SendDocuments(docSendModel, onDone, onFail) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SendDocument", "Send")',
+
+                data: {
+                    docSendModel
+                    //'docIds':docSendModel.docIds,
+                    //'receiverFolIds': docSendModel.receiverFolIds,
+                    //'receiverPrsId': docSendModel.receiverPrsId,
+                    //'folid': docSendModel.folid                    
+                },
+                async: false,
+                success:
+                    function(result) { onDone(result); },
+                error:
+                    function(result) {
+                        console.log(result);
+                        onFail(result);
+                    }
+            });
+
+        }
+
+
+        $('#btnSend').click(function() {
+
+
+            var recprsids = CheckSelectedPrsIdInDiv('GridDraft');
+            var recfolids = CheckSelectedFolIdInDiv('GridDraft');
+
+            var recivers = [];
+            var i;
+            for (i = 0; i < recprsids.length; i++) {
+
+                recivers.push({
+                    ReceiverFolIds: recfolids[i],
+                    ReceiverPrsId: recprsids[i]
+                });
+            }
+
+          
+
+
+            var model = {
+                docIds: getQueryStringByName('docId').split(","),
+                recivers: recivers,
+                folid: getQueryStringByName('folId').split(","),
+                Description: $('#SendDescription').val()
+
+            }
+
+            SendDocuments(model,
+                function(result) {
+
+                    $(this).attr('disabled', 'disabled');
+                    swal("سند ارسال شد");
+
+                }, function(result) {
+                    swal("سند ارسال نشد", result, "error");
+                });
+
+
+        });
+
+    </script>
+
+}
+

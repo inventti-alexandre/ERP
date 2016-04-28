@@ -1,0 +1,253 @@
+﻿@using System.Text.RegularExpressions
+@model DomainLayer.DB_Model.Chart.Chart
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<input type="text" id="txtSearch" placeholder=" جستجوی روی ساختار سازمانی" style="width: 250px;margin-bottom: 15px" />
+@*<input class="btn btn-info" id="btnJoinPrs" value="انتصاب پرسنل" style="  height: 33px;width:300px" />*@
+
+@Html.ActionLink("انتصاب اعضا", "NewChartEmployee", "ChartEmploye", null,new {id= "btnJoinPrs", @class = "btn btn-info", @style= "height: 33px;width:300px" })
+
+@Html.ActionLink("ویرایش اعضا", "ListChartEmployees", "ChartEmploye", null, new { id = "btnEditChartPrs", @class = "btn btn-info", @style = "height: 33px;width:300px" })
+ 
+
+<br />
+
+<div class="jsTree" id="jstree">
+</div>
+<br />
+
+
+
+
+
+
+
+
+
+@section scripts {
+
+
+
+
+
+
+    <script>
+
+        var typeid;
+        var selectedData;
+
+        $('#jstree').jstree({
+            "core": {
+                "multiple": false,
+                "check_callback": true,
+                'data': {
+                    'url': '@Url.Action("GetTreeJson")',
+                    "type": "POST",
+                    "dataType": "json",
+                    "contentType": "application/json; charset=utf8",
+                    'data': function (node) {
+                        return { 'id': node.id };
+                    }
+                }
+            },
+
+            "contextmenu": {
+                items:
+                    function (o, cb) {
+                        var items = $.jstree.defaults.contextmenu.items();
+                        items["create"].label = "ایجاد زیر شاخه";
+                        items["rename"].label = "تغییر نام";
+                        items["remove"].label = "حذف";
+                        var cpp = items["ccp"];
+                        cpp.label = "ویرایش";
+                        var subMenu = cpp["submenu"];
+                        subMenu["copy"].label = "کپی";
+                        subMenu["paste"].label = "پیست";
+                        subMenu["cut"].label = "برش";
+
+
+                        return items;
+                    }
+            },
+
+
+
+
+            "plugins": ["contextmenu", "dnd", "state", "types", "sort", "unique", "search"],
+        })
+            .on('delete_node.jstree', function (e, data) {
+
+                postJsTreeOperation('DeleteNode', data,
+                    function (result) {
+                        swal("حذف انجام شد", "", "success");
+                    },
+                    function (result) {
+                        data.instance.refresh();
+                        swal("حذف انجام نشد", result, "error");
+                    });
+
+            })
+            .on('create_node.jstree', function (e, data) {
+                postJsTreeOperation('CreateNode', data,
+                    function (result) {
+                        data.instance.set_id(data.node, result.id);
+                    },
+                    function (result) {
+                        data.instance.refresh();
+                        swal("No", result, "error");
+                    });
+
+
+            })
+            .on('move_node.jstree', function (e, data) {
+
+                postJsTreeOperation('MoveNode', data,
+                    function (result) {
+                        swal("جابه جایی انجام شد", "", "success");
+                    },
+                    function (result) {
+
+                        swal("جابه جایی انجام نشد", result, "error");
+                        data.instance.refresh();
+                    });
+            })
+            .on('rename_node.jstree', function (e, data) {
+
+                //Created Node Is a New Node That Set Naming With Client
+                if (data.old == 'New node') {
+
+                    var ddlOrgType = "@Html.Raw(Regex.Replace(Html.DropDownListFor(model => model.TypeId, ViewBag.TypeIdGroupList as SelectList, new {@class = "BNazanin", @style = "width: %100"}).ToString(), @"\t|\n|\r", "").Replace("\"", "\'"))";
+                    swal({
+                        title: 'نوع جایگاه جدید را مشخص کنید',
+                        text: ddlOrgType,
+                        html: true,
+                        showConfirmButton: true,
+                        showLoaderOnConfirm: true,
+                        showCancelButton: true,
+                    },
+                        function (isConfirm) {
+                            if (!isConfirm) {
+                                data.instance.refresh();
+                                return;
+                            }
+
+
+                            //Type Id Get From PopUp Windows with swall modal
+                            typeid = $('#TypeId').val();
+                            postJsTreeOperation('CreateNode', data,
+                                function (result) {
+
+                                    if (result) {
+                                        
+                                        setTimeout(function () {
+                                            swal("جایگاه جدید در سیستم افزوده شد", "", "success");
+                                        }, 1000);
+                                    }
+
+                                },
+                                function (result) {
+                                    data.instance.refresh();
+                                    swal("سیستم با خطا مواجه شد", result, "error");
+
+                                });
+
+
+                        });
+                }
+                    //Renaming Existing Node To New Name in Chart
+                else {
+                    postJsTreeOperation('RenameNode', data,
+                        function (result) {
+
+                            if (result.isTrueRename) {
+                                swal("تغییر نام انجام شد", "", "success");
+                            }
+
+                        },
+                        function (result) {
+                            data.instance.refresh();
+                            swal("تغییر نام انجام نشد", result, "error");
+
+                        });
+                }
+
+
+            })
+            .on('dblclick.jstree', function (e,data) {
+              
+                alert(selectedData.node.text);
+            })
+            .on('select_node.jstree', function (e, data) {
+             
+                selectedData = data;
+
+                $('#btnJoinPrs').html(' انتصاب اعضا به  ' + selectedData.node.text );
+                //$('#btnEditChartPrs').html(' ویرایش اعضای ( ' + selectedData.node.text + ' )');
+                
+             });;
+
+
+
+        //This Function Use For Send Data To Server
+        function postJsTreeOperation(operation, data, onDone, onFail) {
+
+            //var typeid = $('#TypeId').val();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("DoJsTreeOperation")',
+                data: {
+                    'operation': operation,
+                    'id': data.node.id,
+                    'parentId': data.node.parent,
+                    'position': data.position,
+                    'text': data.node.text,
+                    'originalId': data.original ? data.original.id : data.node.original.id,
+                    'TypeId': typeid,
+                },
+                async: false,
+                success:
+                    function (result) { onDone(result); },
+                error:
+                    function (result) { onFail(result); },
+            });
+
+        }
+
+        var to = true;
+        $('#txtSearch').keyup(function () {
+            if (to) { clearTimeout(to); }
+            to = setTimeout(function () {
+                var v = $('#txtSearch').val();
+                $('#jstree').jstree(true).search(v);
+            }, 250);
+        });
+
+
+
+        //set id for btn after click for go to page 
+        $('#btnJoinPrs').click(function () {
+            this.href = this.href + "/" + "?chartid=" + selectedData.node.id;
+        });
+
+
+        $('#btnEditChartPrs').click(function () {
+            this.href = this.href + "/" + "?chartid=" + selectedData.node.id;
+        });
+
+
+
+
+    </script>
+
+
+   
+
+
+}
+
+

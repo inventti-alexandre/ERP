@@ -1,0 +1,86 @@
+﻿@model DomainLayer.App_Model.DB_VM.VmDocUpdate
+
+@{
+    ViewBag.Title = "UpdateDocument";
+    Layout = "~/Areas/WorkFlow/Views/Shared/_Layout.cshtml";
+}
+
+
+<ol class="breadcrumb">
+    <li> گردش اطلاعات </li>
+    <li class="active">‍ ویرایش سند </li>
+
+</ol>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <i class="icon-calendar"></i>
+                    <h3 class="panel-title BNazanin18">اطلاعات سند</h3>
+                </div>
+                <div class="panel-body">
+
+                    @Html.HiddenFor(h => h.DocId)
+
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(model => model.DocNo, new {@placeholder = " شماره سند ", disabled = "disabled", @style = "color: red "})
+                            </div>
+                            <div class="col-md-4">
+                                @Html.TextBoxFor(model => model.RegisterDateSh, new {@placeholder = " تاریخ تولید ", disabled = "disabled", @style = ""})
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-md-12">
+
+                                @Html.TextBoxFor(model => model.Subject, new {@placeholder = " موضوع ", @style = "width: 100%"})
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <i class="icon-calendar"></i>
+                    <h3 class="panel-title BNazanin18">محتوای سند</h3>
+                </div>
+                <div class="panel-body">
+
+                    @Html.TextAreaFor(model => model.Content, new {@style = "width: 100%"})
+
+                </div>
+                <div class="panel-footer">
+                    <input type="submit" class="btn btn-info" value="ذخیره تغییرات"/>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+}
+@section scripts {
+
+    <script>
+        CKEDITOR.replace('Content');
+    </script>
+
+}

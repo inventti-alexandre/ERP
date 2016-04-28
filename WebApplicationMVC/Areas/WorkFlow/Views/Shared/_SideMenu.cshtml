@@ -1,0 +1,29 @@
+﻿
+
+@using FrameWork.MVC.Helper
+<nav class="navbar navbar-default  sidebar" role="navigation">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+
+                @if (User.IsInRole("AppWorkFlow") || User.IsInRole("MainAdmin"))
+                {
+
+                    @*<li class="dropdown">
+                            <a href="@Url.Action("Create","Documents", new { @area="WorkFlow"})" class="dropdown-toggle">
+                                <i class="fa fa-edit"></i>
+                                <span style="padding-right: 10px"> اسناد شخصی </span>
+                            </a>
+
+                    </li>*@
+                        @Html.Action("GetFolders", "WorkFlowMain")
+
+                }
+
+
+
+
+            </ul>
+        </div>
+    </div>
+</nav>

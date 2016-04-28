@@ -1,0 +1,65 @@
+﻿@using DomainLayer.DB_Model.EmployeeChart
+@using GridMvc.Html
+@model IEnumerable<DomainLayer.DB_Model.EmployeeChart.EmployeeChart>
+@{
+
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h4>
+    لیست کاربران منصوب شده به عنوان  @ViewBag.ChartName
+
+</h4>
+
+<p>
+    @Html.ActionLink("بازگشت به چارت", "index", "Chart", null, new { @class = "btn btn-info" })
+    @Html.ActionLink("انتصاب کارمند جدید ", "NewChartEmployee", "ChartEmploye", new {@chartid = ViewBag.ChartId }, new { @class = "btn btn-info" })
+</p>
+
+
+@Html.Grid(Model).Named("EmployeeGrid").Columns(columns =>
+{
+
+    columns.Add(c => c.AppUserId, true);
+    columns.Add(c => c.Employee.LastName).Titled("نام خانوادگی");
+    columns.Add(c => c.RegisterDateSh).Titled("تاریخ انتصاب");
+    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o => ActionColumn(o));
+
+
+}).WithPaging(10).Selectable(true)
+
+
+
+
+@helper ActionColumn(EmployeeChart EmployeeChart)
+{
+if (EmployeeChart.IsActive)
+{
+        <input type="button" class="btn btn-warning" value="غیر فعال" />
+        <input type="button" class="btn btn-danger" value="حذف" />
+
+}
+else
+{
+        <input type="button" class="btn btn-success" value="فعال" />
+        <input type="button" class="btn btn-danger" value="حذف" />
+}
+}
+
+
+@section scripts{
+
+    <script>
+
+        $(function () {
+            //pageGrids.EmployeeGrid.onRowSelect(function (e) {
+            //    alert(e.row.AppUserId);
+            //});
+        });
+
+
+
+    </script>
+
+
+}

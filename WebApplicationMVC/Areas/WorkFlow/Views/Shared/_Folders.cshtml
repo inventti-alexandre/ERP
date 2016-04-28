@@ -1,0 +1,52 @@
+﻿@using FrameWork.MVC.Helper
+@using Microsoft.AspNet.Identity
+@model List<DomainLayer.DB_Model.EmployeeChart.EmployeeChart>
+
+
+
+@foreach (var chart in Model)
+{
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="width: 200px" title="@chart.Chart.Name">
+            <i class="fa fa-folder-open"></i>
+            <span style="padding-right: 10px">
+                @(chart.Chart.Name.Length <= 18 ? chart.Chart.Name : chart.Chart.Name.Substring(0, 18) + " ...")
+            </span><i class="fa fa-chevron-circle-down" style="position: absolute; left: 5px"></i>
+        </a>
+
+
+        @foreach (var child in chart.Chart.Children)
+        {
+        <ul class="dropdown-menu forAnimate" role="menu">
+            <li>
+                @switch (child.TypeId)
+                {
+                    //کارتابل
+                    case 4:
+                        @Html.ActionLinkWithIcon(child.Name, "index", "Inbox", new { @area = "WorkFlow", folid=child.ChartId}, new { @class = "BNazanin" }, "fa fa-inbox")
+                        break;
+                    //بازیافت
+                    case 5:
+                        @Html.ActionLinkWithIcon(child.Name, "index", "Recycle", new { @area = "WorkFlow", folid = child.ChartId }, new { @class = "BNazanin" }, "fa fa-recycle")
+                        break;
+                    //پیشنویس
+                    case 6:
+                        @Html.ActionLinkWithIcon(child.Name, "index", "Draft", new { @area = "WorkFlow", folid = child.ChartId }, new { @class = "BNazanin" }, "fa fa-pencil")
+                        break;
+                }
+
+
+            </li>
+        </ul>
+        }
+
+
+
+    </li>
+
+}
+
+
+
+

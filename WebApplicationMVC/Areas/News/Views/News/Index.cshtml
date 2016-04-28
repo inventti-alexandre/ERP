@@ -1,0 +1,38 @@
+﻿@model IEnumerable<DomainLayer.DB_Model.News.News>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "../shared/_Layout.cshtml";
+}
+
+<br/>
+
+@foreach (var item in Model)
+{
+
+    <div class="panel panel-default">
+        <div class="panel-heading clearfix">
+            <i class="icon-calendar"></i>
+
+            <h3 class="panel-title BNazanin18">@item.Subject</h3>
+        </div>
+        <div class="panel-body">
+            @item.Header
+            @Html.ActionLink(" . . . . . .","Index") 
+         
+        </div>
+        <div class="panel-footer">
+          
+                @item.RegisterDateSh
+                گروه
+                @item.NewsGroup.Name
+                
+           
+          
+        </div>
+
+    </div>    
+         
+}
+
+

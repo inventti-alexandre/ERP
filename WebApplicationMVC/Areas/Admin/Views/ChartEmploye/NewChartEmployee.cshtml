@@ -1,0 +1,251 @@
+﻿
+@model IEnumerable<DomainLayer.DB_Model.Employee.Employee>
+
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h4>
+    @string.Format(" کاربرانی که میخواهید به قسمت ( {0} ) از چارت منصوب کنید را انتخاب کنید ", ViewBag.ChartName)
+</h4>
+
+<p>
+    @Html.ActionLink("بازگشت به چارت", "index", "Chart", null, new { @class = "btn btn-info" })
+</p>
+
+
+
+
+<table class="table table-striped table-hover table-bordered table-condensed">
+    <tr>
+        <th>
+            نام و نام خانوادگی
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+
+                @if (item.Charts.Any(a=>a.ChartId==Guid.Parse(Request.QueryString["chartid"])))
+                {
+                    <input type="button" class="open-ConfermDialog btn btn-danger" id="@item.AppUser.Id" data-value="DelEmployeeFromChart" value="حذف از عنوان" style="width: 100px"/>
+
+                    if (item.Charts.Any(a => a.ChartId == Guid.Parse(Request.QueryString["chartid"]) && a.IsActive))
+                    {
+                        <input type="button" class="open-ConfermDialog btn btn-warning" id="@item.AppUser.Id" data-value="DisableEmployeeFromChart" value="غیر فعال سازی عنوان"/>
+                    }
+                    else
+                    {
+                        <input type="button" class="open-ConfermDialog btn btn-success" id="@item.AppUser.Id" data-value="EnableEmployeeFromChart" value=" فعال سازی عنوان" />
+                    }
+
+
+
+                }
+                else
+                {
+                    <input type="button" class="open-ConfermDialog btn btn-success" id="@item.AppUser.Id" data-value="SetEmployeeToChart" value="انتصاب به چارت" style="width:100px" />
+                }
+
+
+
+
+            </td>
+        </tr>
+    }
+
+</table>
+
+
+
+@section scripts{
+
+    <script>
+        $(document).on("click", ".open-ConfermDialog", function () {
+
+           
+            var btn = $(this);
+          
+
+            var employeeId = btn.attr('id');
+          
+
+            var chartId = getQueryStringByName('chartid');
+
+            function setEmployeeToChart(chartid, employeeid) {
+
+                swal({
+                    title: 'ایا از انصاب این شخص اطمینان دارید',
+                    text: '',
+                    html: false,
+                    showConfirmButton: true,
+                    showLoaderOnConfirm: true,
+                    showCancelButton: true
+                },function (isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("JoinEmployeeToChart")',
+                            data: {
+
+                                'Chartid': chartid,
+                                'EmployeeId':employeeid
+                            },
+                            async: false,
+                            success: function (result) {
+
+                                setTimeout(function () {
+                                    swal("با موفقیت انجام شد", "", "success");
+                                }, 1000);
+
+
+                            },
+                            error: function (result) {
+
+                                setTimeout(function () {
+                                    swal("انجام نشد", result, "error");
+                                }, 1000);
+
+
+                            }
+                        });
+
+                    }
+                });
+
+            }
+
+            function disableEmployeeOfChart(chartid, employeeid) {
+
+                swal({
+                    title: 'ایا از غیر فعال کردن شخص در این  سمت اطمینان دارید دارید',
+                    text: '',
+                    html: false,
+                    showConfirmButton: true,
+                    showLoaderOnConfirm: true,
+                    showCancelButton: true,
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("DisableEmployeeOfChart")',
+                            data: {
+
+                                'Chartid': chartid,
+                                'EmployeeId': employeeid
+                            },
+                            async: false,
+                            success: function (result) {
+
+                                setTimeout(function () {
+                                    swal("با موفقیت انجام شد", "", "success");
+                                }, 1000);
+
+
+                            },
+                            error: function (result) {
+
+                                setTimeout(function () {
+                                    swal("انجام نشد", result, "error");
+                                }, 1000);
+
+
+                            }
+                        });
+                    }
+                });
+            }
+
+
+
+            function enableEmployeeOfChart(chartid, employeeid) {
+
+                swal({
+                    title: 'ایا از  فعال کردن شخص در این  سمت اطمینان دارید دارید',
+                    text: '',
+                    html: false,
+                    showConfirmButton: true,
+                    showLoaderOnConfirm: true,
+                    showCancelButton: true
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '@Url.Action("EnableEmployeeOfChart")',
+                            data: {
+
+                                'Chartid': chartid,
+                                'EmployeeId': employeeid
+                            },
+                            async: false,
+                            success: function (result) {
+
+                                setTimeout(function () {
+                                    swal("با موفقیت انجام شد", "", "success");
+                                }, 1000);
+
+
+                            },
+                            error: function (result) {
+
+                                setTimeout(function () {
+                                    swal("انجام نشد", result, "error");
+                                }, 1000);
+
+
+                            }
+                        });
+                    }
+                });
+            }
+
+            switch (btn.data('value')) {
+
+                
+                case 'SetEmployeeToChart':
+                    setEmployeeToChart(chartId,employeeId);
+                    break;
+                case 'DelEmployeeFromChart':
+                    break;
+
+                case 'DisableEmployeeFromChart':
+                    disableEmployeeOfChart(chartId, employeeId);
+                    break;
+
+                case 'EnableEmployeeFromChart':
+                    enableEmployeeOfChart(chartId, employeeId);
+                    break;
+
+                default:
+                    break;
+
+            }
+
+
+          
+           
+        });
+
+
+
+
+
+
+  
+
+
+
+    </script>
+
+}

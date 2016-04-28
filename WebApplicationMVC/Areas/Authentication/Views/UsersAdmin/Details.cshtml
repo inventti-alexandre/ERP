@@ -1,0 +1,118 @@
+﻿@using Microsoft.AspNet.Identity
+@using WebApplicationMVC.Areas.Employee.Helper
+@model DomainLayer.DB_Model.Authentication.ApplicationUser
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "../../../Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>User Details</h2>
+
+<div>
+    <h4>
+        For
+        <span style="color: green">
+            @Html.DisplayFor(model => model.UserName)
+        </span>
+    </h4>
+    <hr />
+
+
+
+
+
+</div>
+
+
+<dl class="dl-horizontal">
+
+    @if (Model.Employee != null)
+    {
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.Picture)
+        </dt>
+        <dd>
+            @Html.EmployeeImage(Model.Employee.Picture)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.FullName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.FullName)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.NationalId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.NationalId)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.FatherName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.FatherName)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.RegisterDateSh)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.RegisterDateSh)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Employee.Type)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employee.Type)
+        </dd>
+
+    }
+
+</dl>
+
+<hr />
+
+
+@if (ViewBag.RoleNames.Count == 0)
+{
+
+    <p>No roles found for this user.</p>
+}
+else
+{
+    <h4>List of roles for this user</h4>
+    <table class="table table-striped table-hover table-bordered table-condensed">
+
+
+        @foreach (var item in ViewBag.RoleNames)
+        {
+            <tr>
+                <td>
+                    @item
+                </td>
+            </tr>
+        }
+    </table>
+
+}
+
+<p>
+    @Html.ActionLink("Edit User And Roles", "Edit", new { id = Model.Id }) |
+
+    @(Model.Employee == null ? 
+     Html.ActionLink("Complete Personnal Information", "AdminCompleteMainInfo", "AdminEmployeeMng", new {@area = "Employee", id = Model.Id}, null) 
+    :Html.ActionLink("Edit Personnal Information", "AdminEditMainInfo", "AdminEmployeeMng", new {@area = "Employee", id = Model.Id}, null))
+    |
+
+    @Html.ActionLink("Back to List", "Index")
+</p>

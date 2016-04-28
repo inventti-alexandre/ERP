@@ -1,0 +1,123 @@
+﻿@using FrameWork.MVC.Helper
+@using GridMvc.Html
+@model IEnumerable<DomainLayer.DB_Model.Send.Send>
+@{
+    
+    Layout = "~/Areas/WorkFlow/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li> گردش اطلاعات </li>
+    <li class="active">‍ پیشنویس </li>
+
+</ol>
+
+
+@Html.ActionLinkWithIcon("سند جدید", "Create", "Documents", new { folid = Request.QueryString["folid"] }, new { @class = "btn btn-info" }, "fa fa-plus-circle")
+
+@*@Html.ActionLinkWithIcon("ارسال", "SendDocument", "send", new { folid = Request.QueryString["folid"] }, new { @class = "btn btn-info" }, "fa fa-send")*@
+
+
+<a id="btnSend" class="btn btn-info" href="#">
+    <i class="fa fa-send"></i>  ارسال
+</a>
+
+
+
+<a id="btnDelete" class="btn btn-danger" href="#">
+    <i class="fa fa-trash-o fa-lg"></i>  حذف
+</a>
+
+
+
+
+
+<div id="GridDraft" class="gridDiv">
+
+    @Html.Grid(Model).Named("DraftGrid").Selectable(false).Columns(columns =>
+{
+
+    columns.Add().Encoded(false).Sanitized(false).SetWidth(10)
+           .RenderValueAs(o => Html.CheckBox("checked", false, new { @Senid = o.SendId ,@docId=o.DocId}));
+
+    columns.Add()
+                        .Titled("موضوع")
+                        .Encoded(false)
+                        .Sanitized(false)
+                        .SetWidth(350)
+                        .RenderValueAs(c => CustomRenderingOfSubjectColumn(c));
+    columns.Add(c => c.Document.RegisterDateSh).Titled("تاریخ نامه");
+    columns.Add(c => c.SendDescription).Titled("توضیح ارسال");
+
+}).WithPaging(10).Selectable(true)
+
+</div>
+
+
+
+
+@helper CustomRenderingOfSubjectColumn(DomainLayer.DB_Model.Send.Send senRecord)
+{
+
+    <a href="@Url.Action("ShowDocument","Documents",new {@docid=senRecord.DocId,@folid=Request.QueryString["folid"] })">@senRecord.Document.Subject</a>
+
+}
+
+
+
+
+@section scripts{
+    <script>
+
+
+        $('#btnDelete').click(function() {
+
+            var selectedChkid = CheckSelectedSenIdInDiv('GridDraft');
+            if (selectedChkid.length === 0) {
+                swal({
+                    title: "سندی انتخاب نشده است",
+                    text: "",
+                    type: "warning",
+                    timer: 2000
+                });
+                return;
+            }
+
+            MoveToRecylebin('@Url.Action("MoveToRecyle")', selectedChkid,
+                function(result) {
+                    swal("سند به بازیافت منتقل شد", "", "success");
+                },
+                function(result) {
+                    swal("اشکال در انتقال سند به بازیافت", "", "error");
+                });
+
+
+        });
+
+
+        $('#btnSend').click(function() {
+
+            var selectedChkid = CheckSelectedDocIdInDiv('GridDraft');
+
+            if (selectedChkid.length === 0) {
+                swal({
+                    title: "سندی انتخاب نشده است",
+                    text: "",
+                    type: "warning",
+                    timer: 2000
+                });
+                return;
+            }
+
+
+            var link = '@Html.Raw(Url.Action("SendDocument", "Send", new { @docId = "---", @folId = Request.QueryString["folid"]}))';
+            link = link.replace("---", selectedChkid);
+
+            window.location.href = link;
+
+
+        });
+
+
+    </script>
+}

@@ -1,0 +1,36 @@
+﻿@model WebApplicationMVC.Areas.Authentication.Models.ExternalLoginListViewModel
+@using Microsoft.Owin.Security
+
+<h4>استفاده از سرویس های دیگر برای ورود</h4>
+<hr />
+@{
+    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+    var authenticationDescriptions = loginProviders as AuthenticationDescription[] ?? loginProviders.ToArray();
+    if (!authenticationDescriptions.Any())
+    {
+        <div>
+            <p class="BNazanin">
+                کاربر گرامی بزودی شما قادر خواهید بود تا با استفاده از سرویس های شبکه های اجتماعی معتبر مانند
+
+                گوگل و فیس بوک به طور مستقیم به حساب کاربری سامانه جامع شارپ خود وارد شوید
+                ازین رو دیگر نیازی به ثبت نام و وارد کردن دوباره اطلاعات پایه خود نخواهید داشت
+                تلاش ما ایجاد حس آسودگی در شماست .
+            </p>
+        </div>
+    }
+    else
+    {
+        using (Html.BeginForm("ExternalLogin", "Account", new {ReturnUrl = Model.ReturnUrl}))
+        {
+            @Html.AntiForgeryToken()
+            <div id="socialLoginList">
+                <p>
+                    @foreach (AuthenticationDescription p in authenticationDescriptions)
+                    {
+                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
+                    }
+                </p>
+            </div>
+        }
+    }
+}

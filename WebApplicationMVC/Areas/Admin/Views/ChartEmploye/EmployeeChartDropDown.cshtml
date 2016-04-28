@@ -1,0 +1,25 @@
+﻿@model List<DomainLayer.DB_Model.EmployeeChart.EmployeeChart>
+
+@if(Model.Any())
+{ 
+    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" value="@Model.First().ChartId">
+        @Model.First().Chart.Name <i class="fa fa-chevron-circle-down"></i>
+    </a>
+
+    for (int i = 1; i < Model.Count - 1; i++)
+    {
+        <ul class="dropdown-menu BNazanin18">
+            <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" value="@Model[i].ChartId">
+                سمت @Model[i].Chart.Name <i class="fa fa-chevron-circle-down"></i>
+            </a>
+
+        </ul>
+    }
+
+}
+
+
+
+
+
+

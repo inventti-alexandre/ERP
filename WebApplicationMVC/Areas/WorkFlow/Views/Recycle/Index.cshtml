@@ -1,0 +1,63 @@
+﻿
+@using FrameWork.MVC.Helper
+@using GridMvc.Html
+@model IEnumerable<DomainLayer.DB_Model.Send.Send>
+@{
+
+    Layout = "~/Areas/WorkFlow/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb">
+    <li> گردش اطلاعات </li>
+    <li class="active">‍ بازیافت </li>
+
+</ol>
+
+
+@*@Html.ActionLinkWithIcon("سند جدید", "Create", "Documents", new { folid = Request.QueryString["folid"] }, new { @class = "btn btn-info" }, "fa fa-plus-circle")
+@Html.ActionLinkWithIcon("ارسال", "", "", new { folid = Request.QueryString["folid"] }, new { @class = "btn btn-info" }, "fa fa-send")*@
+
+
+@*<a id="btnDelete" class="btn btn-danger" href="#">
+    <i class="fa fa-trash-o fa-lg"></i>  حذف
+</a>*@
+
+
+
+
+
+<div id="GridDraft" class="gridDiv">
+
+    @Html.Grid(Model).Named("RecycleGrid").Selectable(false).Columns(columns =>
+{
+
+    columns.Add().Encoded(false).Sanitized(false).SetWidth(10)
+           .RenderValueAs(o => Html.CheckBox("checked", false, new { @id = o.SendId }));
+    columns.Add(c => c.SendId, true);
+    columns.Add()
+                        .Titled("موضوع")
+                        .Encoded(false)
+                        .Sanitized(false)
+                        .SetWidth(350)
+                        .RenderValueAs(c => CustomRenderingOfSubjectColumn(c));
+    columns.Add().Titled("فرستنده سند")
+                 .RenderValueAs(c => c.SenderDepartment.Name + " " + c.SenderEmployee.FullName);
+    columns.Add(c => c.RegisterDateSh).Titled("تاریخ ارجاع");
+    columns.Add(c => c.Document.RegisterDateSh).Titled("تاریخ سند");
+    columns.Add(c => c.SendDescription).Titled("توضیح ارسال");
+
+}).WithPaging(10).Selectable(true)
+
+</div>
+
+
+@helper CustomRenderingOfSubjectColumn(DomainLayer.DB_Model.Send.Send senRecord)
+{
+
+    <a href="@Url.Action("ShowDocument","Documents",new {@docid=senRecord.DocId})">@senRecord.Document.Subject</a>
+
+}
+
+@section scripts{
+   
+}

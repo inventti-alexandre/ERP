@@ -1,0 +1,137 @@
+﻿@model DomainLayer.DB_Model.Documents.Document
+
+@{
+
+    Layout = "~/Areas/WorkFlow/Views/Shared/_Layout.cshtml";
+  
+}
+
+<ol class="breadcrumb">
+    <li> گردش اطلاعات </li>
+    <li class="active">‍ تایپ سند جدید </li>
+   
+</ol>
+
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <i class="icon-calendar"></i>
+                    <h3 class="panel-title BNazanin18">اطلاعات سند</h3>
+                </div>
+                <div class="panel-body">
+
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.DocNo, new { @placeholder = " شماره سند ", disabled = "disabled" ,@style="color: red " })
+                                @Html.ValidationMessageFor(model => model.DocNo)
+                            </div>
+
+                        </div>
+
+                        
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                @Html.TextBoxFor(model => model.Subject, new {@placeholder = " موضوع " , @style="width: 100%"})
+                                @Html.ValidationMessageFor(model => model.Subject)
+                            </div>
+                         
+                        </div>
+                    </div>
+
+                </div>
+              
+
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <i class="icon-calendar"></i>
+                    <h3 class="panel-title BNazanin18">محتوای سند</h3>
+                </div>
+                <div class="panel-body">
+
+                    @Html.TextAreaFor(model => model.Content, new {@style = "width: 100%"})
+
+                </div>
+                <div class="panel-footer">
+                    <input id="btnSaveDoc" type="button" value="ذخیره سند" class="btn btn-primary"/>
+                </div>
+
+            </div>  
+        </div>
+    </div>
+
+
+
+
+
+@section scripts {
+
+    <script>
+        CKEDITOR.replace('Content');
+
+
+        function SaveDocument(documentModel, onDone, onFail) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("SaveDraftDoc", "Documents")',
+                
+                data: {
+                    'Subject': documentModel.Subject,
+                    'Content': documentModel.Content,
+                    'DraftFolderId': documentModel.DraftFolderId
+
+                },
+                async: false,
+                success:
+                    function(result) { onDone(result); },
+                error:
+                    function(result) {
+                        console.log(result);
+                        onFail(result);
+                    }
+            });
+
+        }
+
+    </script>
+
+
+
+
+    <script>
+        //Event Scripts    
+
+        $('#btnSaveDoc').click(function() {
+
+            var model = {
+                Subject: $('#Subject').val(),
+                Content: CKEDITOR.instances.Content.getData(),
+                DraftFolderId: getQueryStringByName('folid')
+
+            }
+
+            SaveDocument(model,
+                function(result) {
+
+                    $('#DocNo').val(result.result);
+                    $('#btnSaveDoc').attr('disabled', 'disabled');
+                    swal("سند ذخیره شد", 'شماره سند : ' + result.result, "success");
+
+                }, function(result) {
+                    swal("سند ذخیره نشد", result, "error");
+                });
+
+        });
+
+
+    </script>
+
+
+}

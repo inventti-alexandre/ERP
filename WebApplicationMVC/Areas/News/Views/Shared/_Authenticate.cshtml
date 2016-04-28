@@ -1,0 +1,85 @@
+﻿@using System.Activities.Expressions
+@using FrameWork.MVC.Helper
+@using Microsoft.AspNet.Identity
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", new { @area = "Authentication" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">مدیریت حساب  @User.Identity.GetUserName()  <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>
+                        @Html.ActionLinkWithIcon(" پروفایل ", "Index", "Manage", new { @area = "Authentication" }, new { title = "Manage", @class = "BNazanin18" }, "fa fa-cog ")
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li>
+                        <a href="javascript:document.getElementById('logoutForm').submit()" class="BNazanin18">
+                            <i class="fa fa-sign-out "> </i>
+                            خروج
+
+                        </a>
+
+                    </li>
+
+                </ul>
+        </ul>
+
+
+
+    }
+
+    <ul class="nav navbar-nav navbar-left">
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                اخبار و رویدادها <i class="fa fa-chevron-circle-down"></i>
+            </a>
+            <ul class="dropdown-menu BNazanin18">
+
+
+                @if (User.IsInRole("AppAdmin") || User.IsInRole("MainAdmin"))
+                {
+                    <li>
+                        @Html.ActionLinkWithIcon("مدیرسیستم", "index", "AdminBase", new { @area = "Admin" }, new { @class = "BNazanin18" }, "fa fa-cogs")
+                    </li>
+                }
+
+                @if (User.IsInRole("AppWorkFlow") || User.IsInRole("MainAdmin"))
+                {
+                    <li>
+
+                        @Html.ActionLinkWithIcon("گردش اطلاعات", "index", "WorkFlowMain", new { @area = "WorkFlow" }, new { @class = "BNazanin18" }, "fa fa-sticky-note-o")
+                    </li>
+                }
+                @if (User.IsInRole("AppShop") || User.IsInRole("MainAdmin"))
+                {
+                    <li><a href="#"><i class="fa fa-dollar"></i>  فروش</a></li>
+                }
+            </ul>
+        </li>
+    </ul>
+
+
+}
+else
+{
+
+    <ul class="nav navbar-nav navbar-right">
+
+        <li>
+
+            @Html.ActionLinkWithIcon(" ثبت نام در سامانه ", "Register", "Account", new { @area = "Authentication" }, new { id = "registerLink", @class = "BNazanin HeaderTxt" }, "fa fa-user-plus fa-inverse")
+
+
+        </li>
+        <li>
+            @Html.ActionLinkWithIcon("ورود به حساب کاربری", "Login", "Account", new { @area = "Authentication" }, new { id = "loginLink", @class = "BNazanin HeaderTxt" }, "fa fa-sign-in fa-inverse")
+
+        </li>
+
+    </ul>
+}

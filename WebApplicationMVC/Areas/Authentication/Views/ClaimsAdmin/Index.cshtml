@@ -1,0 +1,68 @@
+﻿@using System.IdentityModel.Claims
+@model DomainLayer.DB_Model.Authentication.ApplicationUser
+
+@{
+    ViewBag.Title = "Claims";
+}
+
+<h2>Claims</h2>
+
+
+
+
+
+@if (ViewBag.Claims.Count == 0)
+{
+    <hr />
+    <p>No Claim for <span style="color: red" >@Html.DisplayFor(model => model.UserName)</span> </p>
+}
+else
+{
+    <h4>List of Claims for <span style="color: red">@Html.DisplayFor(model => model.UserName)</span></h4>
+}
+
+
+@Html.ActionLink("Add Claim", "Create", new {id = Model.Id})
+
+
+<table class="table table-striped table-hover table-bordered table-condensed">
+    
+    <tr>
+        <th>Issuer</th>
+        <th>Type</th>
+        <th>Value</th>
+        <th>Action</th>
+    </tr>
+    
+
+    @foreach (System.Security.Claims.Claim item in ViewBag.Claims)
+    {
+        <tr>
+          
+            <td>
+                @item.Issuer
+            </td>
+            <td>
+                @item.Type
+            </td>
+            <td>
+                @item.Value
+            </td>
+            <td>
+                
+                @using (Html.BeginForm("delete", "ClaimsAdmin", new {id = Model.Id, value = @item.Value, type = item.Type}, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <input type="submit" value="Delete" class="btn btn-default" />
+                }
+
+                
+               
+            </td>
+        </tr>
+    }
+</table>
+<p>
+    |
+    @Html.ActionLink("Back to List", "index", "UsersAdmin")
+</p>

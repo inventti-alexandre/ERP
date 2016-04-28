@@ -1,0 +1,67 @@
+﻿@model IEnumerable<DomainLayer.DB_Model.News.NewsGroup>
+
+@{
+    Layout = "../../../Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<p>
+    @Html.ActionLink("گروه خبری جدید", "Create",null,new{@class="btn btn-info"})
+</p>
+
+
+@if(Model.Any())
+{ 
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+             
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RegisterDateSh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+                
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegisterDateSh)
+                
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.NewsGroupId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.NewsGroupId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.NewsGroupId })
+            </td>
+        </tr>
+    }
+
+</table>
+}
+else
+{
+    <p>
+        هیچ گروه خبری در سیستم ثبت نشده است
+    </p>
+}

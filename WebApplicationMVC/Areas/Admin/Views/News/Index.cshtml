@@ -1,0 +1,49 @@
+﻿@model IEnumerable<DomainLayer.DB_Model.News.News>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<p>
+    @Html.ActionLink("درج خبر جدید", "Create", null, new { @class = "btn btn-info" })
+</p>
+<table class="table">
+    <tr>
+      
+        
+        <th>
+            @Html.DisplayNameFor(model => model.Subject)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.RegisterDateSh)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+      
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Subject)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RegisterDateSh)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsActive)
+        </td>
+        <td>
+            @Html.ActionLink("ویرایش", "Update", new { id=item.NewsId },new{@class="btn btn-info"}) 
+            @*@Html.ActionLink("Details", "Details", new { id=item.NewsId }) |*@
+            @Html.ActionLink("حذف", "Delete", new { id = item.NewsId }, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>

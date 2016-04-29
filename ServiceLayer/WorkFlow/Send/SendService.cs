@@ -136,6 +136,11 @@ namespace ServiceLayer.WorkFlow.Send
 
         }
 
+        public ICollection<DomainLayer.DB_Model.Send.Send> ShowDocumentSends(Guid docId)
+        {
+            return _send.Where(w => w.DocId == docId).OrderBy(o=>o.RegisterDate).ToList();
+        }
+
         #endregion recycle Folder
 
 

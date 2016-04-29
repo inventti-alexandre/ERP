@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using DomainLayer.App_Model.DB_VM;
 using DomainLayer.App_Model.General;
@@ -18,6 +19,9 @@ namespace ServiceLayer.WorkFlow.DocSend
 
 
         ServicesResult SendDocuments(VmDocSendPost docSendmodel);
+
+        ICollection<DomainLayer.DB_Model.Send.Send> GetDocSends(Guid docid);
+
 
 
     }

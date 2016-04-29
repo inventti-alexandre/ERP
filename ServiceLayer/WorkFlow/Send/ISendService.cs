@@ -21,6 +21,9 @@ namespace ServiceLayer.WorkFlow.Send
         ServicesResult MoveToRecyle(List<String> senids);
 
 
+        ICollection<DomainLayer.DB_Model.Send.Send> ShowDocumentSends(Guid docId);
+
+
 
 
 

@@ -808,6 +808,7 @@
     <Content Include="Areas\WorkFlow\Views\Inbox\Index.cshtml" />
     <Content Include="Areas\WorkFlow\Views\Send\SendDocument.cshtml" />
     <Content Include="Areas\WorkFlow\Views\Documents\EditDocument.cshtml" />
+    <Content Include="Areas\WorkFlow\Views\Send\ShowSends.cshtml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />

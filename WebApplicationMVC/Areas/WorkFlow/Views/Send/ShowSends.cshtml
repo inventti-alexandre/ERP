@@ -1,0 +1,82 @@
+﻿@using FrameWork.MVC.Helper
+@using GridMvc.Html
+@{
+    ViewBag.Title = "ShowSends";
+    Layout = "~/Areas/WorkFlow/Views/Shared/_Layout.cshtml";
+}
+@model ICollection<DomainLayer.DB_Model.Send.Send>
+
+<ol class="breadcrumb">
+    <li> گردش اطلاعات </li>
+    <li class="active">‍  گردش سند</li>
+
+</ol>
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <i class="icon-calendar"></i>
+        <h3 class="panel-title BNazanin18">اطلاعات سند انتخابی</h3>
+    </div>
+    <div class="panel-body">
+
+     
+            <div class="list-group">
+                <a href="#" class="list-group-item ">
+                    <h4 class="list-group-item-heading"> شماره سند @Model.First().Document.DocNo</h4>
+                    <p class="list-group-item-text">با موضوع  @Model.First().Document.Subject  تولید شده در تاریخ @Model.First().Document.RegisterDateSh</p>
+                </a>
+
+            </div>
+        
+
+
+    </div>
+
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <i class="icon-calendar"></i>
+        <h3 class="panel-title BNazanin18">گردش سند</h3>
+    </div>
+    <div class="panel-body">
+
+
+        <div id="GridDraft" class="gridDiv">
+
+            @Html.Grid(Model).Named("DraftGrid").Selectable(false).Columns(columns =>
+{
+
+    columns.Add().Encoded(false).Sanitized(false).SetWidth(10)
+           .RenderValueAs(o => Html.CheckBox("checked", false, new { @Senid = o.SendId, @docId = o.DocId }));
+    columns.Add(c => c.RegisterDateSh).Titled("تاریخ ارجاع");
+    columns.Add().Titled("فرستنده سند")
+               .RenderValueAs(c => c.SenderDepartment.Name + " " + c.SenderEmployee.FullName);
+
+    columns.Add().Titled("گیرنده سند")
+               .RenderValueAs(c => c.ReceverDepartment.Name + " " + c.ReceverEmployee.FullName);
+
+    columns.Add(c => c.Folder.Type.Subject).Titled("جایگاه سند");
+    //columns.Add()
+    //                    .Titled("موضوع")
+    //                    .Encoded(false)
+    //                    .Sanitized(false)
+    //                    .SetWidth(350)
+    //                    .RenderValueAs(c => CustomRenderingOfSubjectColumn(c));
+
+    columns.Add(c => c.SendDescription).Titled("توضیح ارسال");
+
+}).WithPaging(10).Selectable(true)
+
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+

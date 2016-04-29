@@ -12,7 +12,9 @@
     <li class="active">‍ کارتابل </li>
 </ol>
 
-
+<a id="btnShowSends" class="btn btn-info" href="#">
+    <i></i>  گردش
+</a>
 
 <a id="btnDelete" class="btn btn-danger" href="#">
     <i class="fa fa-trash-o fa-lg"></i>  حذف
@@ -27,7 +29,7 @@
 {
 
     columns.Add().Encoded(false).Sanitized(false).SetWidth(10)
-           .RenderValueAs(o => Html.CheckBox("checked", false, new { @Senid = o.SendId }));
+           .RenderValueAs(o => Html.CheckBox("checked", false, new { @Senid = o.SendId , @docId = o.DocId}));
     columns.Add(c => c.SendId, true);
     columns.Add()
                         .Titled("موضوع")
@@ -63,8 +65,8 @@
 @section scripts{
 
     <script>
-   
-        $('#btnDelete').click(function () {
+
+        $('#btnDelete').click(function() {
 
             var selectedChkid = CheckSelectedSenIdInDiv('GridInbox');
             if (selectedChkid.length === 0) {
@@ -77,14 +79,46 @@
                 return;
             }
 
-            MoveToRecylebin('@Url.Action("MoveToRecyle")',selectedChkid,
-                function (result) {
+            MoveToRecylebin('@Url.Action("MoveToRecyle")', selectedChkid,
+                function(result) {
                     swal("سند به بازیافت منتقل شد", "", "success");
                 },
-                function (result) {
+                function(result) {
                     swal("اشکال در انتقال سند به بازیافت", "", "error");
                 });
 
+
+        });
+
+        $('#btnShowSends').click(function() {
+
+
+            var selectedChkid = CheckSelectedDocIdInDiv('GridInbox');
+
+            if (selectedChkid.length === 0) {
+                swal({
+                    title: "سندی انتخاب نشده است",
+                    text: "",
+                    type: "warning",
+                    timer: 2000
+                });
+                return;
+            }
+
+            if (selectedChkid.length > 40) {
+                swal({
+                    title: "فقط یک سند میتوانید انتخاب کنید",
+                    text: "",
+                    type: "warning",
+                    timer: 2000
+                });
+                return;
+            }
+
+
+            var link = '@Html.Raw(Url.Action("ShowSends", "Send", new { @docId = "---"}))';
+            link = link.replace("---", selectedChkid);
+            window.location.href = link;
 
         });
 

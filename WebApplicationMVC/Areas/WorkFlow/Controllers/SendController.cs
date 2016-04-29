@@ -19,6 +19,7 @@ namespace WebApplicationMVC.Areas.WorkFlow.Controllers
 
 
         private readonly IDocSendService _docSendService;
+        
 
 
 
@@ -67,6 +68,18 @@ namespace WebApplicationMVC.Areas.WorkFlow.Controllers
             }
 
             throw new InvalidOperationException(" is not Valid Method Type Method Is Ajax ");
+
+        }
+
+
+
+        [HttpGet]
+        public ActionResult ShowSends(Guid docId)
+        {
+
+            var model = _docSendService.GetDocSends(docId);
+            return View(model);
+
 
         }
     }

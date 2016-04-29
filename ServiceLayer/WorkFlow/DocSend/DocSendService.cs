@@ -105,5 +105,10 @@ namespace ServiceLayer.WorkFlow.DocSend
             }            
 
         }
+
+        public ICollection<DomainLayer.DB_Model.Send.Send> GetDocSends(Guid docid)
+        {
+            return _sendService.ShowDocumentSends(docid);
+        }
     }
 }

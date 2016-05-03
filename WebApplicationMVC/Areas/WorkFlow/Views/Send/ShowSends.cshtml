@@ -19,18 +19,24 @@
     </div>
     <div class="panel-body">
 
-     
-            <div class="list-group">
-                <a href="#" class="list-group-item ">
-                    <h4 class="list-group-item-heading"> شماره سند @Model.First().Document.DocNo</h4>
-                    <p class="list-group-item-text">با موضوع  @Model.First().Document.Subject  تولید شده در تاریخ @Model.First().Document.RegisterDateSh</p>
-                </a>
 
-            </div>
-        
+        <div class="list-group">
+            <a href="#" class="list-group-item ">
+                <h4 class="list-group-item-heading"> شماره سند @Model.First().Document.DocNo</h4>
+                <p class="list-group-item-text">با موضوع @Model.First().Document.Subject تولید شده در تاریخ @Model.First().Document.RegisterDateSh</p>
+            </a>
+
+        </div>
+
 
 
     </div>
+    <div class="panel-footer">
+
+        
+        @Html.ActionLink("سابقه ویرایش سند", "ShowHistory", "Documents", new { @docid = Request.QueryString["docid"] }, new { @class = "btn btn-info" })
+    </div>
+
 
 </div>
 

@@ -25,6 +25,21 @@ namespace DataLayer.Mapping.Documents
               HasForeignKey(f => f.TypeId).WillCascadeOnDelete(false);
 
 
+            this.HasRequired(r => r.OwnerUser).
+            WithMany().
+            HasForeignKey(f => f.OwnerUserId).WillCascadeOnDelete(false);
+
+
+            this.HasRequired(r => r.OwnerDepartment).
+           WithMany().
+           HasForeignKey(f => f.OwnerDepartmentId).WillCascadeOnDelete(false);
+
+
+            this.HasRequired(r => r.Document).
+         WithMany().
+         HasForeignKey(f => f.DocId).WillCascadeOnDelete(false);
+
+
         }
 
     }

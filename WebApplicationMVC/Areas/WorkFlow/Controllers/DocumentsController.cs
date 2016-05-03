@@ -107,6 +107,13 @@ namespace WebApplicationMVC.Areas.WorkFlow.Controllers
         }
 
 
+        public ActionResult ShowHistory(Guid docid)
+        {
+
+            var model = _documentService.GetDocumentHistory(docid);
+            return View(model);
+        }
+
 
     }
 }

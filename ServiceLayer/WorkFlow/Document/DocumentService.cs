@@ -138,9 +138,6 @@ namespace ServiceLayer.WorkFlow.Document
             return _document.Find(docId);
         }
 
-       
-
-
         public ServicesResult UpdateDocument(VmDocUpdate vmDocUpdate)
         {
             try
@@ -198,6 +195,13 @@ namespace ServiceLayer.WorkFlow.Document
             }
         }
 
-        
+
+        #region DocHistory
+        public ICollection<DocHistory> GetDocumentHistory(Guid docId)
+        {
+           return _docHistory.Include(i=>i.OwnerDepartment).Include(i=>i.OwnerUser).Include(i=>i.Type).Where(w => w.DocId == docId).ToList();
+        }
+
+        #endregion DocHistory
     }
 }

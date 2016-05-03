@@ -32,6 +32,8 @@ namespace DomainLayer.DB_Model.Documents
         //شناسه سمت تغییر دهنده
         public Guid OwnerDepartmentId { get; set; }
 
+       
+
 
         #endregion Feild
 
@@ -39,7 +41,10 @@ namespace DomainLayer.DB_Model.Documents
 
         public Type Type { get; set; }
 
-        public ICollection<Document> Documents { get; set; }
+        public Document Document { get; set; }
+        public virtual Chart.Chart OwnerDepartment { get; set; }
+        public virtual Employee.Employee OwnerUser { get; set; }
+
 
         #endregion Relation
 

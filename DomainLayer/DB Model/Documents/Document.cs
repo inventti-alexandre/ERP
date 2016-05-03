@@ -34,8 +34,8 @@ namespace DomainLayer.DB_Model.Documents
         #endregion
 
         #region Relation
-        public ICollection<Title.Title> Titles { get; set; }
 
+        public ICollection<Title.Title> Titles { get; set; }
         public ICollection<Send.Send > Sends { get; set; }
 
         #endregion Relation

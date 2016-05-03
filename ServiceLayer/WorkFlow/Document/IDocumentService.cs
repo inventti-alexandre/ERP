@@ -25,7 +25,11 @@ namespace ServiceLayer.WorkFlow.Document
 
 
 
-        
+        #region DocHistory
+
+        ICollection<DomainLayer.DB_Model.Documents.DocHistory> GetDocumentHistory(Guid docId);
+
+        #endregion DocHistory
 
 
 

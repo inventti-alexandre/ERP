@@ -1,0 +1,46 @@
+﻿@using GridMvc.Html
+@model ICollection<DomainLayer.DB_Model.Documents.DocHistory>
+@{
+    ViewBag.Title = "ShowHistory";
+    Layout = "~/Areas/WorkFlow/Views/Shared/_Layout.cshtml";
+}
+
+
+<ol class="breadcrumb">
+    <li> گردش اطلاعات </li>
+    <li> گردش سند </li>
+    <li class="active">‍ سابقه ویرایش سند </li>
+</ol>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <i class="icon-calendar"></i>
+        <h3 class="panel-title BNazanin18">تغییرات سند</h3>
+    </div>
+    <div class="panel-body">
+
+
+        <div id="HistoryGrid" class="gridDiv">
+
+            @Html.Grid(Model).Named("HistoryGrid").Selectable(false).Columns(columns =>
+       {
+
+           columns.Add().Encoded(false).Sanitized(false).SetWidth(10)
+                  .RenderValueAs(o => Html.CheckBox("checked", false, new { @Id = o.Id }));
+
+           columns.Add(c => c.Type.Subject).Titled("نوع تغییر");
+           columns.Add(c => c.RegisterDateSh).Titled("تاریخ اعمال");
+           columns.Add().Titled("تغییر دهنده")
+                        .RenderValueAs(c => c.OwnerDepartment.Name + " " + c.OwnerUser.FullName);
+           columns.Add(c => c.ChangeSet).Titled("تغییر");
+
+       }).WithPaging(10).Selectable(true)
+
+        </div>
+
+
+
+    </div>
+
+</div>

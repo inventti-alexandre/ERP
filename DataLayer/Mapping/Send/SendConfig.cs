@@ -19,10 +19,6 @@ namespace DataLayer.Mapping.Send
             this.Property(p => p.SendDescription).HasMaxLength(500);
 
 
-            this.HasRequired(r => r.Document).
-             WithMany().
-             HasForeignKey(f => f.DocId).WillCascadeOnDelete(false);
-
 
             this.HasRequired(r => r.Folder).
                WithMany().

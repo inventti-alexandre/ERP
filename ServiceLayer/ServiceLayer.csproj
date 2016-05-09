@@ -146,6 +146,8 @@
     <Compile Include="Session\WebSessionProvider.cs" />
     <Compile Include="WorkFlow\DocSend\DocSendService.cs" />
     <Compile Include="WorkFlow\DocSend\IDocSendService.cs" />
+    <Compile Include="WorkFlow\DocTitle\DocTitleService.cs" />
+    <Compile Include="WorkFlow\DocTitle\IDocTitleService.cs" />
     <Compile Include="WorkFlow\Send\SendService.cs" />
     <Compile Include="WorkFlow\Send\ISendService.cs" />
     <Compile Include="WorkFlow\Document\DocumentService.cs" />

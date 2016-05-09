@@ -1,0 +1,166 @@
+﻿@using GridMvc.Html
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/WorkFlow/Views/Shared/_Layout.cshtml";
+}
+@model DomainLayer.App_Model.DB_VM.VmDocTitle
+
+<ol class="breadcrumb">
+    <li> گردش اطلاعات </li>
+    <li class="active">‍ عناوین سند </li>
+</ol>
+
+
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <i class="icon-calendar"></i>
+        <h3 class="panel-title BNazanin18">اطلاعات سند انتخابی</h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="list-group">
+            <a href="#" class="list-group-item ">
+                <h4 class="list-group-item-heading"> شماره سند @Model.Document.DocNo</h4>
+                <p class="list-group-item-text">با موضوع @Model.Document.Subject تولید شده در تاریخ @Model.Document.RegisterDateSh</p>
+            </a>
+
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <i class="icon-calendar"></i>
+        <h3 class="panel-title BNazanin18">عناوین سازمان</h3>
+    </div>
+    <div class="panel-body">
+
+        <div id="GridAvalableTitle" class="gridDiv">
+
+            @Html.Grid(Model.AvalableTitle).Named("AvalableTitle").Selectable(false).Columns(columns =>
+            {
+
+                columns.Add().Encoded(false).Sanitized(false).SetWidth(10)
+                    .RenderValueAs(o => Html.CheckBox("checked", false, new {@folId = o.ChartId, @PrsId = o.AppUserId}));
+                columns.Add(c => c.Employee.FullName).Titled("نام پرسنل");
+                columns.Add(c => c.Chart.Name).Titled("سمت");
+
+            }
+                ).WithPaging(10).Selectable(true)
+
+        </div>
+
+
+    </div>
+    <div class="panel-footer">
+        <input type="button" value="تایید" data-type="201" class="btn btn-primary addTitle"/>
+        <input type="button" value="امضا" data-type="202" class="btn btn-primary addTitle"/>
+        <input type="button" value="ثبت" data-type="203" class="btn btn-primary addTitle"/>
+        <input type="button" value="رونوشت" data-type="204" class="btn btn-primary addTitle"/>
+        <input type="button" value="اقدام کننده" data-type="205" class="btn btn-primary addTitle" />
+        
+    </div>
+
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <i class="icon-calendar"></i>
+        <h3 class="panel-title BNazanin18">عناوین انتخاب شده</h3>
+    </div>
+    <div class="panel-body">
+
+        <div id="GridSelectedTitle" class="gridDiv">
+
+            @Html.Grid(Model.SelectedTitle).Named("SelectedTitle").Selectable(false).Columns(columns =>
+            {
+
+                columns.Add().Encoded(false).Sanitized(false).SetWidth(10)
+                    .RenderValueAs(o => Html.CheckBox("checked", false, new {@titId = o.Id}));
+                columns.Add(c => c.Order).Titled("ردیف");
+                columns.Add(c => c.ReceiverEmployee.FullName).Titled("نام پرسنل");
+                columns.Add(c => c.ReceiverDepartment.Name).Titled("سمت");
+                columns.Add(c => c.Type.Subject).Titled("عنوان");
+
+            }
+                ).WithPaging(10).Selectable(true)
+
+        </div>
+
+
+    </div>
+    <div class="panel-footer">
+        <input type="button" value="حذف" class="btn btn-danger"/>
+        <input type="button" value="ویرایش" class="btn btn-warning"/>
+    </div>
+
+</div>
+
+
+@section scripts {
+
+    <script>
+
+
+        function AddDocTitle(docTitleModel, onDone, onFail) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddTitle", "Title")',
+
+                data: {
+                    docTitleModel
+                },
+                async: false,
+                success:
+                    function (result) { onDone(result); },
+                error:
+                    function (result) {
+                        console.log(result);
+                        onFail(result);
+                    }
+            });
+
+        }
+
+
+        $('.addTitle').click(function() {
+            
+            var btn = $(this);
+            var titleType = btn.data('type');
+            var prsids = CheckSelectedPrsIdInDiv('GridAvalableTitle');
+            var folids = CheckSelectedFolIdInDiv('GridAvalableTitle');
+
+            var recivers = [];
+            var i;
+            for (i = 0; i < prsids.length; i++) {
+
+                recivers.push({
+                    ReceiverFolIds: folids[i],
+                    ReceiverPrsId: prsids[i]
+                });
+            }
+
+            var model = {
+                DocId: getQueryStringByName('docId').split(","),
+                Titles: recivers,
+                Folid: getQueryStringByName('folId').split(","),
+                TypeId:titleType
+            }
+
+
+            AddDocTitle(model,
+                function (result) {
+                    swal("عنوان افزوده شد");
+
+                }, function (result) {
+                    swal("افزودن عنوان با مشکل روبرو شد", result, "error");
+                });
+            
+        });
+
+
+    </script>
+
+}

@@ -25,6 +25,7 @@ using StructureMap;
 using StructureMap.Web;
 using ServiceLayer.ChartEmployee;
 using ServiceLayer.WorkFlow.DocSend;
+using ServiceLayer.WorkFlow.DocTitle;
 using ServiceLayer.WorkFlow.Document;
 using ServiceLayer.WorkFlow.Send;
 
@@ -140,7 +141,9 @@ namespace ObjectFactory.MVC
               .HybridHttpOrThreadLocalScoped()
               .Use<DocSendService>();
 
-
+                ioc.For<IDocTitleService>()
+                          .HybridHttpOrThreadLocalScoped()
+                          .Use<DocTitleService>();
 
 
                 // session manager setup

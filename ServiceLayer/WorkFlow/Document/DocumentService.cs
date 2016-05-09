@@ -116,7 +116,7 @@ namespace ServiceLayer.WorkFlow.Document
                 return new ServicesResult()
                 {
                     Success = true,
-                    Data = document.DocNo,
+                    Data = new { docNo = document.DocNo, docId = document.DocId },
 
                 };
             }

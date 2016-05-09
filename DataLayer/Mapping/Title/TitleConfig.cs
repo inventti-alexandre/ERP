@@ -19,7 +19,7 @@ namespace DataLayer.Mapping.Title
             {
                 //اگر کلاس ارث گرفته از کلاس والد باشد فیلدهای کلاس  والد را لحاظ میکنیم
                 m.MapInheritedProperties();
-                m.ToTable("tbl_title");
+                m.ToTable("tbl_Title");
             });
 
             this.HasKey(key => key.Id);
@@ -36,25 +36,21 @@ namespace DataLayer.Mapping.Title
                 .HasForeignKey(f => f.TypeId).WillCascadeOnDelete(false);
 
 
-            this.HasRequired(r => r.ReceverDepartment)
+            this.HasRequired(r => r.ReceiverDepartment)
                 .WithMany()
-                .HasForeignKey(f => f.ReceverDepartmentId).WillCascadeOnDelete(false);
+                .HasForeignKey(f => f.ReceiverDepartmentId).WillCascadeOnDelete(false);
 
 
-            this.HasRequired(r => r.ReceverEmployee)
+            this.HasRequired(r => r.ReceiverEmployee)
              .WithMany()
-             .HasForeignKey(f => f.ReceverEmployeeId)
+             .HasForeignKey(f => f.ReceiverEmployeeId)
              .WillCascadeOnDelete(false);
 
-
-            this.HasRequired(r => r.OwnerDepartment)
-            .WithMany()
-            .HasForeignKey(f => f.OwnerDepartmentId).WillCascadeOnDelete(false);
 
 
             this.HasRequired(r => r.OwnerEmployee)
                 .WithMany()
-                .HasForeignKey(f => f.OwnerEmployeeId).WillCascadeOnDelete(false);
+                .HasForeignKey(f => f.OwnerUserId).WillCascadeOnDelete(false);
 
 
         }

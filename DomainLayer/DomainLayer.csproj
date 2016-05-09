@@ -96,6 +96,8 @@
     <Compile Include="App Model\DB_VM\VMDocDraftSave.cs" />
     <Compile Include="App Model\DB_VM\VMDocSend.cs" />
     <Compile Include="App Model\DB_VM\VMDocSendPost.cs" />
+    <Compile Include="App Model\DB_VM\VMDocTitle.cs" />
+    <Compile Include="App Model\DB_VM\VMDocTitlePost.cs" />
     <Compile Include="App Model\DB_VM\VMDocUpdate.cs" />
     <Compile Include="DB Model\Authentication\ApplicationRole.cs" />
     <Compile Include="DB Model\Authentication\ApplicationUser.cs" />

@@ -12,6 +12,8 @@
    
 </ol>
 
+    <input type="hidden" id="returnedDocIdAfterSave"/>
+   
 
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
@@ -60,7 +62,8 @@
 
                 </div>
                 <div class="panel-footer">
-                    <input id="btnSaveDoc" type="button" value="ذخیره سند" class="btn btn-primary"/>
+                    <input id="btnSaveDoc" type="button" value="ذخیره سند"  class="btn btn-primary"/>
+                    <input id="btnTitle"   type="button" value="عناوین سند" class="btn btn-primary" disabled="disabled" />
                 </div>
 
             </div>  
@@ -81,7 +84,7 @@
             $.ajax({
                 type: 'POST',
                 url: '@Url.Action("SaveDraftDoc", "Documents")',
-                
+
                 data: {
                     'Subject': documentModel.Subject,
                     'Content': documentModel.Content,
@@ -106,7 +109,7 @@
 
 
     <script>
-        //Event Scripts    
+
 
         $('#btnSaveDoc').click(function() {
 
@@ -120,13 +123,25 @@
             SaveDocument(model,
                 function(result) {
 
-                    $('#DocNo').val(result.result);
+                    $('#DocNo').val(result.result.docNo);
+                    $('#returnedDocIdAfterSave').val(result.result.docId);
+
                     $('#btnSaveDoc').attr('disabled', 'disabled');
-                    swal("سند ذخیره شد", 'شماره سند : ' + result.result, "success");
+                    $('#btnTitle').removeAttr("disabled");
+                    swal("سند ذخیره شد", 'شماره سند : ' + result.result.docNo, "success");
 
                 }, function(result) {
                     swal("سند ذخیره نشد", result, "error");
                 });
+
+        });
+
+        $('#btnTitle').click(function() {
+            
+            var link = '@Html.Raw(Url.Action("index", "Title", new { @docId = "---", @folId = Request.QueryString["folid"]}))';
+            link = link.replace("---", $('#returnedDocIdAfterSave').val());
+            window.location.href = link;
+
 
         });
 

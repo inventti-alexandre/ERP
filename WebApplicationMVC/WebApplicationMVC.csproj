@@ -227,6 +227,7 @@
     <Compile Include="Areas\WorkFlow\Controllers\InboxController.cs" />
     <Compile Include="Areas\WorkFlow\Controllers\RecycleController.cs" />
     <Compile Include="Areas\WorkFlow\Controllers\SendController.cs" />
+    <Compile Include="Areas\WorkFlow\Controllers\TitleController.cs" />
     <Compile Include="Areas\WorkFlow\Controllers\WorkFlowMainController.cs" />
     <Compile Include="Areas\WorkFlow\WorkFlowAreaRegistration.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -810,6 +811,7 @@
     <Content Include="Areas\WorkFlow\Views\Documents\EditDocument.cshtml" />
     <Content Include="Areas\WorkFlow\Views\Send\ShowSends.cshtml" />
     <Content Include="Areas\WorkFlow\Views\Documents\ShowHistory.cshtml" />
+    <Content Include="Areas\WorkFlow\Views\Title\Index.cshtml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />

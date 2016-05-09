@@ -184,6 +184,8 @@ namespace DataLayer.Migrations
 
         }
 
+
+
         private void AddTitleTypeToDb(SharpCoContext context, int startId,int groupCode =3)
         {
             var customCode = startId;
@@ -238,6 +240,18 @@ namespace DataLayer.Migrations
                     RegisterDate = DateTime.Now,
                     RegisterDateSh = FrameWork.General.Date.Getdate(),
                 },
+                 new Type()
+                {
+                    Group =groupCode ,
+                    Code = ++customCode,
+                    Order = 5,
+                    Subject = "اقدام کننده",
+                    Description = "اقدام کننده سند",
+                    TypeId = customCode,
+                    OwnerUserId = Guid.Empty,
+                    RegisterDate = DateTime.Now,
+                    RegisterDateSh = FrameWork.General.Date.Getdate(),
+                },
 
 
             };
@@ -252,9 +266,6 @@ namespace DataLayer.Migrations
             }
 
         }
-
-
-
 
         private void AddDocHistoryTypeToDb(SharpCoContext context, int startId, int groupCode = 4)
         {

@@ -31,17 +31,16 @@ namespace DomainLayer.DB_Model.Title
         //شناسه سند
         public Guid DocId { get; set; }
 
+        //اولویت
+        public int Order { get; set; }
+
         //شناسه سمت دریافت کننده
-        public Guid ReceverDepartmentId { get; set; }
+        public Guid ReceiverDepartmentId { get; set; }
 
         //شناسه شخص دریافت کننده سند
-        public Guid ReceverEmployeeId { get; set; }
+        public Guid ReceiverEmployeeId { get; set; }
 
-        //شناسه شخص فرستنده 
-        public Guid OwnerEmployeeId { get; set; }
-
-        //شناسه سمت فرستنده 
-        public Guid OwnerDepartmentId { get; set; }
+      
 
         #endregion Feild
 
@@ -53,14 +52,14 @@ namespace DomainLayer.DB_Model.Title
 
         public virtual Documents.Document Document { get; set; }
 
-        public Type Type { get; set; }
+        public virtual Type Type { get; set; }
 
 
-        public virtual Chart.Chart ReceverDepartment { get; set; }
-        public virtual Employee.Employee ReceverEmployee { get; set; }
+        public virtual Chart.Chart ReceiverDepartment { get; set; }
+        public virtual Employee.Employee ReceiverEmployee { get; set; }
 
+        
 
-        public virtual Chart.Chart OwnerDepartment { get; set; }
         public virtual Employee.Employee OwnerEmployee { get; set; }
 
 

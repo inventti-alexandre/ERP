@@ -284,8 +284,19 @@ namespace DataLayer.Migrations
                     RegisterDate = DateTime.Now,
                     RegisterDateSh = FrameWork.General.Date.Getdate(),
                 },
-               
 
+                 new Type()
+                {
+                    Group =groupCode ,
+                    Code = ++customCode,
+                    Order = 0,
+                    Subject = "حذف عنوان سند",
+                    Description = "عنوان سند حذف شده است",
+                    TypeId = customCode,
+                    OwnerUserId = Guid.Empty,
+                    RegisterDate = DateTime.Now,
+                    RegisterDateSh = FrameWork.General.Date.Getdate(),
+                },
 
             };
 

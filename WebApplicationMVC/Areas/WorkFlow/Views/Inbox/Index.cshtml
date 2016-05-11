@@ -93,7 +93,7 @@
         $('#btnShowSends').click(function() {
 
 
-            var selectedChkid = CheckSelectedDocIdInDiv('GridInbox');
+            var selectedChkid = CheckSelectedIdInDiv('GridInbox', 'docId');
 
             if (selectedChkid.length === 0) {
                 swal({

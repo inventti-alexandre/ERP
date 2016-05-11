@@ -17,6 +17,10 @@ namespace ServiceLayer.WorkFlow.DocTitle
 
         ServicesResult AddDocTitle(IList<Title> titles);
 
+        ServicesResult RemoveDocTitle(IList<string> titleId, Guid ownerUserId, Guid ownerFolId);
+
+        int MaxTitleOrder(Guid docId);
+
 
     }
 }

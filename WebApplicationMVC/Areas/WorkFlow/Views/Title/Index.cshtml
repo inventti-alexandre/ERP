@@ -92,8 +92,8 @@
 
     </div>
     <div class="panel-footer">
-        <input type="button" value="حذف" class="btn btn-danger"/>
-        <input type="button" value="ویرایش" class="btn btn-warning"/>
+        <input type="button" id="btnDelete" value="حذف" class="btn btn-danger"/>
+        <input type="button" id="btnEdite" value="ویرایش" class="btn btn-warning"/>
     </div>
 
 </div>
@@ -129,8 +129,19 @@
             
             var btn = $(this);
             var titleType = btn.data('type');
-            var prsids = CheckSelectedPrsIdInDiv('GridAvalableTitle');
-            var folids = CheckSelectedFolIdInDiv('GridAvalableTitle');
+            var prsids = CheckSelectedIdInDiv('GridAvalableTitle', 'prsid');
+            var folids = CheckSelectedIdInDiv('GridAvalableTitle', 'folid');
+
+            if (prsids.length === 0) {
+                swal({
+                    title: "عنوانی انتخاب نشده است",
+                    text: "",
+                    type: "warning",
+                    timer: 2000
+                });
+                return;
+            }
+
 
             var recivers = [];
             var i;
@@ -160,6 +171,31 @@
             
         });
 
+        $('#btnDelete').click(function() {
+            
+            var selectedChkid = CheckSelectedIdInDiv('GridSelectedTitle', 'titId');
+            if (selectedChkid.length === 0) {
+                swal({
+                    title: "سندی انتخاب نشده است",
+                    text: "",
+                    type: "warning",
+                    timer: 2000
+                });
+                return;
+            }
+
+
+            RemoveDocTitles('@Url.Action("RemoveTitle")', selectedChkid,'@Request.QueryString["folid"]',
+               function (result) {
+                   swal("عنوان حذف شد", "", "success");
+               },
+               function (result) {
+                   swal("اشکال در حذف عنوان", "", "error");
+               });
+
+
+
+        });
 
     </script>
 

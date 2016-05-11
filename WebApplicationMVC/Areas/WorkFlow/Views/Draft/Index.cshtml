@@ -72,7 +72,7 @@
 
         $('#btnDelete').click(function() {
 
-            var selectedChkid = CheckSelectedSenIdInDiv('GridDraft');
+            var selectedChkid = CheckSelectedIdInDiv('GridDraft', 'Senid');
             if (selectedChkid.length === 0) {
                 swal({
                     title: "سندی انتخاب نشده است",
@@ -97,7 +97,7 @@
 
         $('#btnSend').click(function() {
 
-            var selectedChkid = CheckSelectedDocIdInDiv('GridDraft');
+            var selectedChkid = CheckSelectedIdInDiv('GridDraft', 'docId');
 
             if (selectedChkid.length === 0) {
                 swal({

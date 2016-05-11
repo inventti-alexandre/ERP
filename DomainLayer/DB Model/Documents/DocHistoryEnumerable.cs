@@ -12,7 +12,8 @@ namespace DomainLayer.DB_Model.Documents
         public enum DocHistoryType
         {
             
-            EditeDocument=301
+            EditeDocument=301,
+            RemoveTitle=302
         }
 
 

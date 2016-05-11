@@ -33,10 +33,10 @@
                     <div class="form-horizontal">
                         <div class="form-group">
                             <div class="col-md-4">
-                                @Html.TextBoxFor(model => model.DocNo, new {@placeholder = " شماره سند ", disabled = "disabled", @style = "color: red "})
+                                @Html.TextBoxFor(model => model.DocNo, new { @placeholder = " شماره سند ", disabled = "disabled", @style = "color: red " })
                             </div>
                             <div class="col-md-4">
-                                @Html.TextBoxFor(model => model.RegisterDateSh, new {@placeholder = " تاریخ تولید ", disabled = "disabled", @style = ""})
+                                @Html.TextBoxFor(model => model.RegisterDateSh, new { @placeholder = " تاریخ تولید ", disabled = "disabled", @style = "" })
                             </div>
                         </div>
 
@@ -44,7 +44,7 @@
                         <div class="form-group">
                             <div class="col-md-12">
 
-                                @Html.TextBoxFor(model => model.Subject, new {@placeholder = " موضوع ", @style = "width: 100%"})
+                                @Html.TextBoxFor(model => model.Subject, new { @placeholder = " موضوع ", @style = "width: 100%" })
 
                             </div>
 
@@ -64,11 +64,13 @@
                 </div>
                 <div class="panel-body">
 
-                    @Html.TextAreaFor(model => model.Content, new {@style = "width: 100%"})
+                    @Html.TextAreaFor(model => model.Content, new { @style = "width: 100%" })
 
                 </div>
                 <div class="panel-footer">
                     <input type="submit" class="btn btn-info" value="ذخیره تغییرات"/>
+                    @Html.ActionLink("تغییر عناوین", "Index", "Title", new { @docId = Model.DocId, @folid = Request.QueryString["folid"] }, new {@class="btn btn-info"})
+                    
                 </div>
 
             </div>

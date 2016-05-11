@@ -98,36 +98,11 @@
     <script>
 
 
-        function SendDocuments(docSendModel, onDone, onFail) {
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("SendDocument", "Send")',
-
-                data: {
-                    docSendModel
-                    //'docIds':docSendModel.docIds,
-                    //'receiverFolIds': docSendModel.receiverFolIds,
-                    //'receiverPrsId': docSendModel.receiverPrsId,
-                    //'folid': docSendModel.folid                    
-                },
-                async: false,
-                success:
-                    function(result) { onDone(result); },
-                error:
-                    function(result) {
-                        console.log(result);
-                        onFail(result);
-                    }
-            });
-
-        }
-
-
         $('#btnSend').click(function() {
 
 
-            var recprsids = CheckSelectedPrsIdInDiv('GridDraft');
-            var recfolids = CheckSelectedFolIdInDiv('GridDraft');
+            var recprsids = CheckSelectedIdInDiv('GridDraft', 'prsid');
+            var recfolids = CheckSelectedIdInDiv('GridDraft', 'folid');
 
             var recivers = [];
             var i;
@@ -150,7 +125,7 @@
 
             }
 
-            SendDocuments(model,
+            SendDocuments('@Url.Action("SendDocument","Send")', model,
                 function(result) {
 
                     $(this).attr('disabled', 'disabled');

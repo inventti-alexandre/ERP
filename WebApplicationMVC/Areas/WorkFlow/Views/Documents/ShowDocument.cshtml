@@ -26,7 +26,7 @@
                 <div class="form-horizontal">
                     <div class="form-group">
                         <div class="col-md-4">
-                                @Html.TextBoxFor(model => model.DocNo, new { @placeholder = " شماره سند ", disabled = "disabled", @style = "color: red " })
+                            @Html.TextBoxFor(model => model.DocNo, new { @placeholder = " شماره سند ", disabled = "disabled", @style = "color: red " })
                         </div>
                         <div class="col-md-4">
                             @Html.TextBoxFor(model => model.RegisterDateSh, new { @placeholder = " تاریخ تولید ", disabled = "disabled", @style = "" })
@@ -36,9 +36,9 @@
 
                     <div class="form-group">
                         <div class="col-md-12">
-                           
-                                @Html.TextBoxFor(model => model.Subject, new { @placeholder = " موضوع ", disabled = "disabled", @style = "width: 100%" })
-                           
+
+                            @Html.TextBoxFor(model => model.Subject, new { @placeholder = " موضوع ", disabled = "disabled", @style = "width: 100%" })
+
                         </div>
 
                     </div>
@@ -50,6 +50,26 @@
 
 
         </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading clearfix">
+                <i class="icon-calendar"></i>
+                <h3 class="panel-title BNazanin18">عناوین سند</h3>
+            </div>
+            <div class="panel-body">
+
+                <div class="list-group">
+                    @foreach (var title in Model.Titles.OrderBy(o => o.Order))
+                    {
+                        <a href="#" class="list-group-item ">
+                            <h4 class="list-group-item-heading">  @title.Type.Subject</h4>
+                            <p class="list-group-item-text">@title.ReceiverDepartment.Name @title.ReceiverEmployee.FullName</p>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
         <div class="panel panel-default">
             <div class="panel-heading clearfix">
                 <i class="icon-calendar"></i>
@@ -59,10 +79,12 @@
                 @Html.TextAreaFor(model => model.Content, new { @style = "width: 100%" })
             </div>
             <div class="panel-footer">
-                @Html.ActionLink("ویرایش سند", "EditDocument", new { @docid = Model.DocId , @folid=Request.QueryString["folid"] },new {@class="btn btn-info"}) 
+                @Html.ActionLink("ویرایش سند", "EditDocument", new { @docid = Model.DocId, @folid = Request.QueryString["folid"] }, new { @class = "btn btn-info" })
             </div>
 
         </div>
+
+        
 
     </div>
 </div>
@@ -72,7 +94,7 @@
 
     <script>
         CKEDITOR.replace('Content', { readOnly: true });
-        
+
 
     </script>
 

@@ -54,6 +54,9 @@
 
     </div>
     <div class="panel-footer">
+        
+        <input type="text" id="SenDescription"  maxlength="500" placeholder="توضیح ارسال" style="width:100%;margin-bottom:10PX" />
+       
         <input type="button" value="تایید" data-type="201" class="btn btn-primary addTitle"/>
         <input type="button" value="امضا" data-type="202" class="btn btn-primary addTitle"/>
         <input type="button" value="ثبت" data-type="203" class="btn btn-primary addTitle"/>
@@ -75,16 +78,17 @@
         <div id="GridSelectedTitle" class="gridDiv">
 
             @Html.Grid(Model.SelectedTitle).Named("SelectedTitle").Selectable(false).Columns(columns =>
-            {
+       {
 
-                columns.Add().Encoded(false).Sanitized(false).SetWidth(10)
-                    .RenderValueAs(o => Html.CheckBox("checked", false, new {@titId = o.Id}));
-                columns.Add(c => c.Order).Titled("ردیف");
-                columns.Add(c => c.ReceiverEmployee.FullName).Titled("نام پرسنل");
-                columns.Add(c => c.ReceiverDepartment.Name).Titled("سمت");
-                columns.Add(c => c.Type.Subject).Titled("عنوان");
+           columns.Add().Encoded(false).Sanitized(false).SetWidth(10)
+               .RenderValueAs(o => Html.CheckBox("checked", false, new {@titId = o.Id}));
+           columns.Add(c => c.Order).Titled("ردیف");
+           columns.Add(c => c.ReceiverEmployee.FullName).Titled("نام پرسنل");
+           columns.Add(c => c.ReceiverDepartment.Name).Titled("سمت");
+           columns.Add(c => c.Type.Subject).Titled("عنوان");
+           columns.Add(c => c.SenDescription).Titled("توضیح ارسال");
 
-            }
+       }
                 ).WithPaging(10).Selectable(true)
 
         </div>
@@ -92,8 +96,8 @@
 
     </div>
     <div class="panel-footer">
-        <input type="button" id="btnDelete" value="حذف" class="btn btn-danger"/>
-        <input type="button" id="btnEdite" value="ویرایش" class="btn btn-warning"/>
+        <input type="button" id="btnDelete" value="حذف" class="btn btn-warning"/>
+        <input type="button" id="btnSend"   value="ارسال عنوانی" class="btn btn-success"/>
     </div>
 
 </div>
@@ -154,9 +158,9 @@
             }
 
             var model = {
-                DocId: getQueryStringByName('docId').split(","),
+                DocId: getQueryStringByName('docId'),
+                SenDescription: $('#SenDescription').val(),
                 Titles: recivers,
-                Folid: getQueryStringByName('folId').split(","),
                 TypeId:titleType
             }
 
@@ -193,6 +197,20 @@
                    swal("اشکال در حذف عنوان", "", "error");
                });
 
+
+
+        });
+
+
+        $('#btnSend').click(function () {
+
+            
+            SendWithDocTitles('@Url.Action("SendDocWithTitles", "send")', '@Request.QueryString["docId"]', '@Request.QueryString["folId"]', function (result) {
+                swal("ارسال با موفقیت انجام شد", "", "success");
+            },
+               function (result) {
+                   swal("خطا در ارسال", "", "error");
+               })
 
 
         });

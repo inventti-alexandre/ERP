@@ -10,9 +10,11 @@ namespace DomainLayer.App_Model.DB_VM
     {
         public string DocId { get; set; }
 
+        public string SenDescription { get; set; }
+
         public List<DocTitlePos> Titles { get; set; }
 
-        public string Folid { get; set; }
+        //public string Folid { get; set; }
 
 
         public string OwnerUserId { get; set; }

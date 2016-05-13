@@ -56,7 +56,7 @@ namespace WebApplicationMVC.Areas.WorkFlow.Controllers
                
                 var titleList= docTitleModel.Titles.Select(title => new Title()
                 {
-                    DocId = Guid.Parse(docTitleModel.DocId), Order = ++maxOrder, OwnerUserId = Guid.Parse(docTitleModel.OwnerUserId), ReceiverDepartmentId = Guid.Parse(title.ReceiverFolIds), ReceiverEmployeeId = Guid.Parse(title.ReceiverPrsId), TypeId = docTitleModel.TypeId, Name = "",
+                    DocId = Guid.Parse(docTitleModel.DocId), Order = ++maxOrder, OwnerUserId = Guid.Parse(docTitleModel.OwnerUserId), ReceiverDepartmentId = Guid.Parse(title.ReceiverFolIds), ReceiverEmployeeId = Guid.Parse(title.ReceiverPrsId), TypeId = docTitleModel.TypeId, SenDescription = docTitleModel.SenDescription.Trim(),
                 }).ToList();
 
                 var result=_titleService.AddDocTitle(titleList);

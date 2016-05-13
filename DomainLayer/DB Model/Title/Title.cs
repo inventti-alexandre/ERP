@@ -15,13 +15,16 @@ namespace DomainLayer.DB_Model.Title
         public Title()
         {
             Id = Guid.NewGuid();
+            IsSended = false;
         }
 
 
         #region Feild
 
         public Guid Id { get; set; }
-        public string Name { get; set; }
+
+        //توضیح هنگام ارسال
+        public string SenDescription { get; set; }
 
 
         //شناسه نوع
@@ -40,7 +43,8 @@ namespace DomainLayer.DB_Model.Title
         //شناسه شخص دریافت کننده سند
         public Guid ReceiverEmployeeId { get; set; }
 
-      
+        //آیا به عنوان ارسال شده یا خیر
+        public bool IsSended { get; set; }
 
         #endregion Feild
 

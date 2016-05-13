@@ -118,6 +118,7 @@
     <Compile Include="DB Model\News\News.cs" />
     <Compile Include="DB Model\News\NewsGroup.cs" />
     <Compile Include="DB Model\Title\Title.cs" />
+    <Compile Include="DB Model\Title\TitleEnumerable.cs" />
     <Compile Include="Mapper\AutoMapperConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DB Model\Send\Send.cs" />

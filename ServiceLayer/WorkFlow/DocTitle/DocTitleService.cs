@@ -146,5 +146,26 @@ namespace ServiceLayer.WorkFlow.DocTitle
             return titles.Max(m=>m.Order);
 
         }
+
+        public bool SetAsSendedDoc(Guid titId)
+        {
+            try
+            {
+                var model = _titles.Find(titId);
+
+                model.IsSended = true;
+                _uow.MarkAsChanged(model);
+                _uow.SaveChanges();
+
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+           
+
+        }
     }
 }

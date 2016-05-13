@@ -21,6 +21,8 @@ namespace ServiceLayer.WorkFlow.DocTitle
 
         int MaxTitleOrder(Guid docId);
 
+        bool SetAsSendedDoc(Guid titId);
+
 
     }
 }

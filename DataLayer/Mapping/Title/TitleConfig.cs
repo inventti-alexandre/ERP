@@ -25,9 +25,9 @@ namespace DataLayer.Mapping.Title
             this.HasKey(key => key.Id);
 
 
-            this.Property(p => p.Name).IsRequired().HasMaxLength(500);
+            this.Property(p => p.SenDescription).IsRequired().HasMaxLength(500);
 
-
+            
 
 
 

@@ -72,6 +72,20 @@ namespace WebApplicationMVC.Areas.WorkFlow.Controllers
         }
 
 
+        [HttpPost]
+        public ActionResult SendDocWithTitles(Guid docId,Guid ownerFolId) {
+
+            var result = _docSendService.SendDocWithTitles(docId, Guid.Parse(User.Identity.GetUserId().ToString()), ownerFolId);
+            if (result.Success) {
+
+                return Json(new { result = "ok" }, JsonRequestBehavior.AllowGet);
+
+            }
+
+            throw new InvalidOperationException($"Server Error : {result.Message} Inner Error : {result.InnerExeption}");
+
+        }
+
 
         [HttpGet]
         public ActionResult ShowSends(Guid docId)

@@ -19,6 +19,8 @@ namespace ServiceLayer.WorkFlow.DocSend
 
 
         ServicesResult SendDocuments(VmDocSendPost docSendmodel);
+        ServicesResult SendDocWithTitles(Guid docId, Guid OwnerUserId, Guid OwnerFolId);
+
 
         ICollection<DomainLayer.DB_Model.Send.Send> GetDocSends(Guid docid);
 
